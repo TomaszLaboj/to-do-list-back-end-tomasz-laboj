@@ -1,5 +1,8 @@
 export interface DbItem {
-  // sketch out interface here
+  description: string;
+  dateAdded: string;
+  dueDate: string;
+  status: string;
 }
 
 export interface DbItemWithId extends DbItem {
@@ -10,23 +13,6 @@ const db: DbItemWithId[] = [];
 
 /** Variable to keep incrementing id of database items */
 let idCounter = 0;
-
-/**
- * Adds in some dummy database items to the database
- *
- * @param n - the number of items to generate
- * @returns the created items
- */
-export const addDummyDbItems = (n: number): DbItemWithId[] => {
-  const createdSignatures: DbItemWithId[] = [];
-  for (let count = 0; count < n; count++) {
-    const createdSignature = addDbItem({
-      // possibly add some generated data here
-    });
-    createdSignatures.push(createdSignature);
-  }
-  return createdSignatures;
-};
 
 /**
  * Adds in a single item to the database
