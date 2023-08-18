@@ -18,7 +18,7 @@ app.get("/todos", async (req, res) => {
   const client = new pg.Client(process.env.DATABASE_URL); //why pg.Client and not new Client?
   await client.connect();
   const allTodos = await client.query("SELECT * FROM todos;");
-  res.status(200).json(allTodos);
+  res.status(200).json(allTodos.rows);
 
   await client.end();
 });
