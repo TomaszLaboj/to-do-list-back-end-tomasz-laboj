@@ -14,7 +14,7 @@ app.use(cors());
 const PORT_NUMBER = process.env.PORT ?? 4000;
 
 app.get("/todos", async (req, res) => {
-  const client = new pg.Client(process.env.DATABASE_URL); 
+  const client = new pg.Client(process.env.DATABASE_URL);
   await client.connect();
   const allTodos = await client.query("SELECT * FROM todos;");
   res.status(200).json(allTodos.rows);
@@ -42,7 +42,7 @@ app.put("/todos/:id", async (req, res) => {
   const id = parseInt(req.params.id);
   console.log(id, "id for put request");
   const { description, date_added, due_date, status } = req.body;
-  
+
   const result = await client.query(
     "UPDATE todos SET description = $2, date_added = $3, due_date = $4, status = $5 WHERE id = $1;",
     [id, description, date_added, due_date, status]
