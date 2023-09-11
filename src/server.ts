@@ -26,16 +26,23 @@ app.get("/todos", async (_req, res) => {
 });
 
 app.post("/todos", async (req, res) => {
-  const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
+  try {
+    const client = new pg.Client({
+      connectionString: process.env.DATABASE_URL,
+    });
 
-  await client.connect();
-  const { description, date_added, due_date, status } = req.body;
-  await client.query(
-    "INSERT INTO todos (description, date_added,due_date, status) VALUES ($1, $2, $3, $4)",
-    [description, date_added, due_date, status]
-  );
-  res.status(201).json({ status: "success" });
-  await client.end();
+    await client.connect();
+    const { description, date_added, due_date, status } = req.body;
+    await client.query(
+      "INSERT INTO todos (description, date_added,due_date, status) VALUES ($1, $2, $3, $4)",
+      [description, date_added, due_date, status]
+    );
+    res.status(201).json({ status: "success" });
+    await client.end();
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("An error occurred. Check server logs.");
+  }
 });
 
 app.put("/todos/:id", async (req, res) => {
@@ -55,7 +62,7 @@ app.put("/todos/:id", async (req, res) => {
     });
   } else {
     res.status(404).json({
-      status: "fail",
+      status: "Could not find a signature with that id identifier",
     });
   }
   await client.end();
