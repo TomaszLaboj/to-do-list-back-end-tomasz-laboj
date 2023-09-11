@@ -1,9 +1,7 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv"; // what is the difference between dotenv/config?
-import pg from "pg"; //why not 'import {Client} from "pg"?
-
-// import { date } from "faker"; // what is that?
+import dotenv from "dotenv";
+import pg from "pg";
 
 const app = express();
 
@@ -22,7 +20,6 @@ app.get("/todos", async (req, res) => {
   await client.end();
 });
 
-// should I add catching errors?
 app.post("/todos", async (req, res) => {
   const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
 
