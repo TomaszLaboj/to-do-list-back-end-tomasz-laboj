@@ -11,13 +11,18 @@ app.use(cors());
 
 const PORT_NUMBER = process.env.PORT ?? 4000;
 
-app.get("/todos", async (req, res) => {
-  const client = new pg.Client(process.env.DATABASE_URL);
-  await client.connect();
-  const allTodos = await client.query("SELECT * FROM todos;");
-  res.status(200).json(allTodos.rows);
+app.get("/todos", async (_req, res) => {
+  try {
+    const client = new pg.Client(process.env.DATABASE_URL);
+    await client.connect();
+    const allTodos = await client.query("SELECT * FROM todos;");
+    res.status(200).json(allTodos.rows);
 
-  await client.end();
+    await client.end();
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("An error occurred. Check server logs.");
+  }
 });
 
 app.post("/todos", async (req, res) => {
