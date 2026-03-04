@@ -29,6 +29,9 @@ app.post("/todos", async (req, res) => {
   try {
     const client = new pg.Client({
       connectionString: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false,
+      }
     });
 
     await client.connect();
@@ -46,7 +49,12 @@ app.post("/todos", async (req, res) => {
 });
 
 app.put("/todos/:id", async (req, res) => {
-  const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
+  const client = new pg.Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    }
+  });
   await client.connect();
   const id = parseInt(req.params.id);
   console.log(id, "id for put request");
@@ -69,7 +77,12 @@ app.put("/todos/:id", async (req, res) => {
 });
 
 app.delete("/todos/:id", async (req, res) => {
-  const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
+  const client = new pg.Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    }
+  });
   await client.connect();
   const id = parseInt(req.params.id);
   console.log(id);
