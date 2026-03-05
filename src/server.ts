@@ -35,10 +35,10 @@ app.post("/todos", async (req, res) => {
     });
 
     await client.connect();
-    const { description, date_added, due_date, status } = req.body;
+    const { title, description, date_added, due_date, status } = req.body;
     await client.query(
-      "INSERT INTO todos (description, date_added,due_date, status) VALUES ($1, $2, $3, $4)",
-      [description, date_added, due_date, status]
+      "INSERT INTO todos (title, description, date_added,due_date, status) VALUES ($1, $2, $3, $4, $5)",
+      [title, description, date_added, due_date, status]
     );
     res.status(201).json({ status: "success" });
     await client.end();
@@ -57,12 +57,11 @@ app.put("/todos/:id", async (req, res) => {
   });
   await client.connect();
   const id = parseInt(req.params.id);
-  console.log(id, "id for put request");
-  const { description, date_added, due_date, status } = req.body;
-
+  const { title, description, date_added, due_date, status } = req.body;
+  console.log('id:', id)
   const result = await client.query(
-    "UPDATE todos SET description = $2, date_added = $3, due_date = $4, status = $5 WHERE id = $1;",
-    [id, description, date_added, due_date, status]
+    "UPDATE todos SET title = $2, description = $3, date_added = $4, due_date = $5, status = $6 WHERE id = $1;",
+    [id, title, description, date_added, due_date, status]
   );
   if (result.rowCount === 1) {
     res.status(200).json({
@@ -85,7 +84,7 @@ app.delete("/todos/:id", async (req, res) => {
   });
   await client.connect();
   const id = parseInt(req.params.id);
-  console.log(id);
+  console.log('id:', id);
   const queryResult = await client.query("DELETE FROM todos WHERE id=$1;", [
     id,
   ]);
